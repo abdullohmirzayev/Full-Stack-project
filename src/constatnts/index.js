@@ -1,0 +1,1 @@
+export const logo = 'https://ibb.co/JdwQc4k'
