@@ -1,12 +1,8 @@
 import { useState } from 'react'
 import { icon } from '../constants'
 import { Input } from '../ui'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-	registerUserFailure,
-	registerUserStart,
-	registerUserSuccess,
-} from '../slice/auth'
+import { useSelector, useDispatch } from 'react-redux'
+import { signUserFailure, signUserStart, signUserSuccess } from '../slice/auth'
 import AuthService from '../service/auth'
 
 const Register = () => {
@@ -16,20 +12,15 @@ const Register = () => {
 	const dispatch = useDispatch()
 	const { isLoading } = useSelector(state => state.auth)
 
-	const regisetHandler = async e => {
+	const registerHandler = async e => {
 		e.preventDefault()
-		dispatch(registerUserStart())
-		const user = {
-			username: name,
-			email,
-			password,
-		}
+		dispatch(signUserStart())
+		const user = { username: name, email, password }
 		try {
-			const response = await AuthService.useRegister(user)
-			console.log(response)
-			dispatch(registerUserSuccess())
+			const response = await AuthService.userRegister(user)
+			dispatch(signUserSuccess(response.user))
 		} catch (error) {
-			dispatch(registerUserFailure())
+			dispatch(signUserFailure(error.response.data.errors))
 		}
 	}
 
@@ -37,37 +28,25 @@ const Register = () => {
 		<div className='text-center mt-5'>
 			<main className='form-signin w-25 m-auto'>
 				<form>
-					<img
-						className='mb-2'
-						src={icon}
-						alt='teachedu-high-resolution-logo'
-						width='72'
-						height='70'
-						border='0'
-					/>
+					<img className='mb-2' src={icon} alt='' width='72' height='60' />
 					<h1 className='h3 mb-3 fw-normal'>Please register</h1>
 
 					<Input label={'Username'} state={name} setState={setName} />
-					<Input
-						label={'Email address'}
-						type='email'
-						state={email}
-						setState={setEmail}
-					/>
+					<Input label={'Email address'} state={email} setState={setEmail} />
 					<Input
 						label={'Password'}
-						type='password'
+						type={'password'}
 						state={password}
 						setState={setPassword}
 					/>
 
 					<button
-						className='btn btn-primary w-100 py-2 mt-2'
-						type='submit'
-						onClick={regisetHandler}
+						className='w-100 btn btn-lg btn-primary mt-2'
 						disabled={isLoading}
+						onClick={registerHandler}
+						type='submit'
 					>
-						{isLoading ? 'Loading...' : 'Register'}
+						{isLoading ? 'loading...' : 'Register'}
 					</button>
 				</form>
 			</main>
