@@ -11,7 +11,7 @@ const Login = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const dispatch = useDispatch()
-	const { isLoading } = useSelector(state => state.auth)
+	const { isLoading, loggedIn } = useSelector(state => state.auth)
 	const navigate = useNavigate()
 
 	const loginHandler = async e => {
@@ -31,7 +31,7 @@ const Login = () => {
 		if (loggedIn) {
 			navigate('/')
 		}
-	}, [])
+	}, [loggedIn])
 
 	return (
 		<div className='text-center mt-5'>

@@ -7,8 +7,7 @@ const ValidationError = () => {
 	const errorMessage = useCallback(() => {
 		return Object.keys(error).map(name => {
 			const msg = error[name].join(', ')
-			const result = `${name} - ${msg}`
-			return result
+			return `${name} - ${msg}`
 		})
 	}, [error])
 
@@ -16,7 +15,7 @@ const ValidationError = () => {
 		error !== null &&
 		errorMessage().map(error => (
 			<div
-				className='alert alert-danger m-1 p-1 text-start'
+				class='alert alert-danger m-1 p-1 text-start'
 				role='alert'
 				key={error}
 			>
